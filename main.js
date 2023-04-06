@@ -1,10 +1,13 @@
-const { InstanceBase, Regex, runEntrypoint, InstanceStatus } = require('@companion-module/base')
-const UpgradeScripts = require('./upgrades')
-const UpdateActions = require('./actions')
-const UpdateFeedbacks = require('./feedbacks')
-const UpdateVariableDefinitions = require('./variables')
+import { InstanceBase, runEntrypoint, InstanceStatus } from '@companion-module/base'
+import { getActions } from './actions.js'
+import { getVariables } from './variables.js'
+import { getFeedbacks } from './feedbacks.js'
+import { getPresets } from './presets.js'
+import { UpgradeScripts } from './upgrades.js'
 
-class ModuleInstance extends InstanceBase {
+import { UniversalSpeedtest, SpeedUnits } from 'universal-speedtest'
+
+class SpeedtestInstance extends InstanceBase {
 	constructor(internal) {
 		super(internal)
 	}
@@ -14,51 +17,113 @@ class ModuleInstance extends InstanceBase {
 
 		this.updateStatus(InstanceStatus.Ok)
 
-		this.updateActions() // export actions
-		this.updateFeedbacks() // export feedbacks
-		this.updateVariableDefinitions() // export variable definitions
+		this.updateActions()
+		this.updateFeedbacks()
+		this.updateVariableDefinitions()
+		this.initPresets()
+
+		this.universalSpeedtest = new UniversalSpeedtest({
+			debug: true,
+			measureUpload: true,
+			downloadUnit: SpeedUnits.Mbps,
+		})
+
+		this.runTest()
 	}
-	// When module gets deleted
+
 	async destroy() {
 		this.log('debug', 'destroy')
 	}
 
 	async configUpdated(config) {
 		this.config = config
+		this.init(config)
 	}
 
-	// Return config fields for web config
 	getConfigFields() {
 		return [
 			{
-				type: 'textinput',
-				id: 'host',
-				label: 'Target IP',
-				width: 8,
-				regex: Regex.IP,
-			},
-			{
-				type: 'textinput',
-				id: 'port',
-				label: 'Target Port',
-				width: 4,
-				regex: Regex.PORT,
+				type: 'dropdown',
+				id: 'service',
+				label: 'Service',
+				choices: [
+					{ id: 'cloudflare', label: 'Cloudflare' },
+					{ id: 'speedtest', label: 'Speedtest.net' },
+				],
+				default: 'cloudflare',
 			},
 		]
 	}
 
 	updateActions() {
-		UpdateActions(this)
+		const actions = getActions.bind(this)()
+		this.setActionDefinitions(actions)
 	}
 
 	updateFeedbacks() {
-		UpdateFeedbacks(this)
+		const feedbacks = getFeedbacks.bind(this)()
+		this.setFeedbackDefinitions(feedbacks)
 	}
 
 	updateVariableDefinitions() {
-		UpdateVariableDefinitions(this)
+		const variables = getVariables.bind(this)()
+		this.setVariableDefinitions(variables)
 	}
-	
+
+	initPresets() {
+		const presets = getPresets.bind(this)()
+		this.setPresetDefinitions(presets)
+	}
+
+	runTest() {
+		this.testComplete = false
+		this.setVariableValues({ test_status: 'Running' })
+		this.checkFeedbacks('testComplete')
+
+		if (this.config?.service === 'cloudflare') {
+			this.universalSpeedtest
+				.runCloudflareCom()
+				.then((result) => {
+					this.processTest(result)
+					this.updateStatus(InstanceStatus.Ok)
+				})
+				.catch((error) => {
+					this.log('error', error.message)
+					this.setVariableValues({ test_status: 'Error' })
+					this.updateStatus(InstanceStatus.ConnectionFailure)
+				})
+		} else {
+			this.universalSpeedtest
+				.runSpeedtestNet()
+				.then((result) => {
+					this.processTest(result)
+					this.updateStatus(InstanceStatus.Ok)
+				})
+				.catch((error) => {
+					this.log('error', error.message)
+					this.setVariableValues({ test_status: 'Error' })
+					this.updateStatus(InstanceStatus.ConnectionFailure)
+				})
+		}
+	}
+
+	processTest(data) {
+		this.testComplete = true
+		this.testResult = data
+
+		this.setVariableValues({
+			test_status: 'Complete',
+			download_speed: Math.round(data.downloadSpeed),
+			upload_speed: Math.round(data.uploadSpeed),
+			ping: Math.round(data.ping),
+			jitter: Math.round(data.jitter),
+			server_city: data.server?.city,
+			server_distance: Math.round(data.server?.distance),
+			client_public_ip: data.client?.ip,
+		})
+
+		this.checkFeedbacks('resultCheck', 'testComplete')
+	}
 }
 
-runEntrypoint(ModuleInstance, UpgradeScripts)
+runEntrypoint(SpeedtestInstance, UpgradeScripts)
