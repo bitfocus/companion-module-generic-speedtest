@@ -3,7 +3,7 @@
 	"name": "generic-speedtest",
 	"shortname": "speedtest",
 	"description": "Perform internet speedtests from popular services.",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"license": "MIT",
 	"repository": "git+https://github.com/bitfocus/companion-module-generic-speedtest.git",
 	"bugs": "https://github.com/bitfocus/companion-module-generic-speedtest/issues",
