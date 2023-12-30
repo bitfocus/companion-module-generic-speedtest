@@ -77,7 +77,16 @@ class SpeedtestInstance extends InstanceBase {
 
 	runTest() {
 		this.testComplete = false
-		this.setVariableValues({ test_status: 'Running' })
+		this.setVariableValues({
+			test_status: 'Running',
+			download_speed: '-',
+			upload_speed: '-',
+			ping: '-',
+			jitter: '-',
+			server_city: 'TBD',
+			server_distance: 'TBD',
+			client_public_ip: 'TBD',
+		})
 		this.checkFeedbacks('testComplete')
 
 		if (this.config?.service === 'cloudflare') {
