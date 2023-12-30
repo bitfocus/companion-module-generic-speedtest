@@ -8,13 +8,37 @@ export function getPresets() {
 	const ColorOrange = combineRgb(255, 102, 0)
 
 	let presets = {
+		runTest: {
+			type: 'button',
+			category: 'General',
+			name: 'Run Test',
+			options: {},
+			style: {
+				text: 'Run Speedtest',
+				size: '14',
+				color: ColorWhite,
+				bgcolor: ColorBlack,
+			},
+			steps: [
+				{
+					down: [
+						{
+							actionId: 'runSpeedtest',
+							options: {},
+						},
+					],
+					up: [],
+				},
+			],
+			feedbacks: [],
+		},
 		testStatus: {
 			type: 'button',
 			category: 'General',
 			name: 'Test Status',
 			options: {},
 			style: {
-				text: '$(speedtest:test_status)',
+				text: 'Status:\\n$(speedtest:test_status)',
 				size: '14',
 				color: ColorWhite,
 				bgcolor: ColorBlack,
@@ -26,6 +50,14 @@ export function getPresets() {
 				},
 			],
 			feedbacks: [
+				{
+					feedbackId: 'testComplete',
+					options: {},
+					isInverted: true,
+					style: {
+						bgcolor: ColorOrange,
+					},
+				},
 				{
 					feedbackId: 'testComplete',
 					options: {},
@@ -118,6 +150,25 @@ export function getPresets() {
 			options: {},
 			style: {
 				text: '$(speedtest:server_city)\\n$(speedtest:server_distance) km',
+				size: '14',
+				color: ColorWhite,
+				bgcolor: ColorBlack,
+			},
+			steps: [
+				{
+					down: [],
+					up: [],
+				},
+			],
+			feedbacks: [],
+		},
+		deviceIp: {
+			type: 'button',
+			category: 'General',
+			name: 'Public IP',
+			options: {},
+			style: {
+				text: 'Public IP\\n$(speedtest:client_public_ip)',
 				size: '14',
 				color: ColorWhite,
 				bgcolor: ColorBlack,
