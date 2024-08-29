@@ -2,6 +2,16 @@
 # yarn lockfile v1
 
 
+"@bryce-seifert/universal-speedtest@^3.0.1":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@bryce-seifert/universal-speedtest/-/universal-speedtest-3.0.1.tgz#8a927a54de5c1e127c2dce025abce71f09bdc415"
+  integrity sha512-EEDK9yXR2UMu3tC1SNHBYobAGomcpUTj1VubBeR02kLDQP+XDluDlSn29eG6R0w0DLdMFKc7rck7ipxuql7sJg==
+  dependencies:
+    convert "^5.3.0"
+    fast-xml-parser "^4.0.12"
+    urllib "^4.2.0"
+    xml2js "^0.6.2"
+
 "@companion-module/base@~1.10.0":
   version "1.10.0"
   resolved "https://registry.yarnpkg.com/@companion-module/base/-/base-1.10.0.tgz#fbfe5822422f30c6e4ad04dc2e4e0559a8166571"
@@ -1672,15 +1682,6 @@ unicorn-magic@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/unicorn-magic/-/unicorn-magic-0.1.0.tgz#1bb9a51c823aaf9d73a8bfcd3d1a23dde94b0ce4"
   integrity sha512-lRfVq8fE8gz6QMBuDM6a+LO3IAzTi05H6gCVaUpir2E1Rwpo4ZUog45KpNXKC/Mn3Yb9UDuHumeFTo9iV/D9FQ==
-
-universal-speedtest@bryce-seifert/universal-speedtest#9b27a4e:
-  version "3.0.1"
-  resolved "https://codeload.github.com/bryce-seifert/universal-speedtest/tar.gz/9b27a4e84a42f83464be46997a37b70a39705c98"
-  dependencies:
-    convert "^5.3.0"
-    fast-xml-parser "^4.0.12"
-    urllib "^4.2.0"
-    xml2js "^0.6.2"
 
 universalify@^2.0.0:
   version "2.0.1"

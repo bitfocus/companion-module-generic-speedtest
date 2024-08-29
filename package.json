@@ -12,8 +12,8 @@
 		"url": "git+https://github.com/bitfocus/companion-module-generic-speedtest.git"
 	},
 	"dependencies": {
-		"@companion-module/base": "~1.10.0",
-		"universal-speedtest": "bryce-seifert/universal-speedtest#9b27a4e"
+		"@bryce-seifert/universal-speedtest": "^3.0.1",
+		"@companion-module/base": "~1.10.0"
 	},
 	"devDependencies": {
 		"@companion-module/tools": "^2.0.0",
