@@ -5,7 +5,7 @@ import { getFeedbacks } from './feedbacks.js'
 import { getPresets } from './presets.js'
 import { UpgradeScripts } from './upgrades.js'
 
-import { UniversalSpeedTest, SpeedUnits } from 'universal-speedtest'
+import { UniversalSpeedTest, SpeedUnits } from '@bryce-seifert/universal-speedtest'
 
 class SpeedtestInstance extends InstanceBase {
 	constructor(internal) {
