@@ -5,7 +5,7 @@ import { getFeedbacks } from './feedbacks.js'
 import { getPresets } from './presets.js'
 import { UpgradeScripts } from './upgrades.js'
 
-import { UniversalSpeedtest, SpeedUnits } from 'universal-speedtest'
+import { UniversalSpeedTest, SpeedUnits } from 'universal-speedtest'
 
 class SpeedtestInstance extends InstanceBase {
 	constructor(internal) {
@@ -21,14 +21,17 @@ class SpeedtestInstance extends InstanceBase {
 		this.updateFeedbacks()
 		this.updateVariableDefinitions()
 		this.initPresets()
-
-		this.universalSpeedtest = new UniversalSpeedtest({
-			debug: true,
-			measureUpload: true,
-			downloadUnit: SpeedUnits.Mbps,
+		this.testComplete = false
+		this.setVariableValues({
+			test_status: 'Stopped',
+			download_speed: '-',
+			upload_speed: '-',
+			ping: '-',
+			jitter: '-',
+			server_city: 'TBD',
+			server_distance: 'TBD',
+			client_public_ip: 'TBD',
 		})
-
-		this.runTest()
 	}
 
 	async destroy() {
@@ -76,6 +79,13 @@ class SpeedtestInstance extends InstanceBase {
 	}
 
 	runTest() {
+		this.universalSpeedtest = new UniversalSpeedTest({
+			debug: true,
+			measureUpload: true,
+			downloadUnit: SpeedUnits.Mbps,
+			wait: false,
+		})
+
 		this.testComplete = false
 		this.setVariableValues({
 			test_status: 'Running',
@@ -91,7 +101,7 @@ class SpeedtestInstance extends InstanceBase {
 
 		if (this.config?.service === 'cloudflare') {
 			this.universalSpeedtest
-				.runCloudflareCom()
+				.runCloudflareTest()
 				.then((result) => {
 					this.processTest(result)
 					this.updateStatus(InstanceStatus.Ok)
@@ -103,7 +113,7 @@ class SpeedtestInstance extends InstanceBase {
 				})
 		} else {
 			this.universalSpeedtest
-				.runSpeedtestNet()
+				.runSpeedtestTest()
 				.then((result) => {
 					this.processTest(result)
 					this.updateStatus(InstanceStatus.Ok)
