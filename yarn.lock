@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@bryce-seifert/universal-speedtest@^3.0.1":
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/@bryce-seifert/universal-speedtest/-/universal-speedtest-3.0.1.tgz#8a927a54de5c1e127c2dce025abce71f09bdc415"
-  integrity sha512-EEDK9yXR2UMu3tC1SNHBYobAGomcpUTj1VubBeR02kLDQP+XDluDlSn29eG6R0w0DLdMFKc7rck7ipxuql7sJg==
+"@bryce-seifert/universal-speedtest@^3.0.6":
+  version "3.0.6"
+  resolved "https://registry.yarnpkg.com/@bryce-seifert/universal-speedtest/-/universal-speedtest-3.0.6.tgz#8b1f40f0a3f74836cbf8c63eeb905592da794e71"
+  integrity sha512-Fi93Nl+paih3oa7HV7Ezrb5RY2mchOZzJeAVvvW5b5OtGn1kvP1xCK4jKjTUXq7Pe11AJnk3OmVU2U3fB1Slhg==
   dependencies:
     convert "^5.3.0"
     fast-xml-parser "^4.0.12"
