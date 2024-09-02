@@ -23,7 +23,7 @@ class SpeedtestInstance extends InstanceBase {
 		this.initPresets()
 		this.testComplete = false
 		this.setVariableValues({
-			test_status: 'Stopped',
+			test_status: 'Not Yet Run',
 			download_speed: '-',
 			upload_speed: '-',
 			ping: '-',
