@@ -7,7 +7,7 @@ export function getVariables() {
 		{ variableId: 'server_city', name: 'Test server city' },
 		{ variableId: 'server_distance', name: 'Test server distance (km)' },
 		{ variableId: 'client_public_ip', name: 'Public IP address of the host machine' },
-		{ variableId: 'test_status', name: 'Current status of the speedtest' },
+		{ variableId: 'test_status', name: 'Current status of the speed test' },
 	]
 	return variables
 }

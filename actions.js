@@ -1,7 +1,7 @@
 export function getActions() {
 	return {
 		runSpeedtest: {
-			name: 'Run Speedtest',
+			name: 'Run Test',
 			options: [],
 			callback: () => {
 				this.runTest()
