@@ -2,7 +2,7 @@
 	"id": "generic-speedtest",
 	"name": "generic-speedtest",
 	"shortname": "speedtest",
-	"description": "Perform internet speedtests from popular services.",
+	"description": "Perform internet speed tests using Ookla's speedtest.net.",
 	"version": "0.0.0",
 	"license": "MIT",
 	"repository": "git+https://github.com/bitfocus/companion-module-generic-speedtest.git",
