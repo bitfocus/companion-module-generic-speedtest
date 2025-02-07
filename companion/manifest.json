@@ -3,7 +3,7 @@
 	"name": "generic-speedtest",
 	"shortname": "speedtest",
 	"description": "Perform internet speedtests from popular services.",
-	"version": "1.0.2",
+	"version": "0.0.0",
 	"license": "MIT",
 	"repository": "git+https://github.com/bitfocus/companion-module-generic-speedtest.git",
 	"bugs": "https://github.com/bitfocus/companion-module-generic-speedtest/issues",
@@ -14,7 +14,7 @@
 		}
 	],
 	"runtime": {
-		"type": "node18",
+		"type": "node22",
 		"api": "nodejs-ipc",
 		"apiVersion": "0.0.0",
 		"entrypoint": "../main.js"

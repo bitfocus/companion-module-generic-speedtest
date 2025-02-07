@@ -5,7 +5,7 @@ import { getFeedbacks } from './feedbacks.js'
 import { getPresets } from './presets.js'
 import { UpgradeScripts } from './upgrades.js'
 
-import { UniversalSpeedTest, SpeedUnits } from '@bryce-seifert/universal-speedtest'
+import { UniversalSpeedTest, DistanceUnits } from 'universal-speedtest'
 
 class SpeedtestInstance extends InstanceBase {
 	constructor(internal) {
@@ -44,18 +44,7 @@ class SpeedtestInstance extends InstanceBase {
 	}
 
 	getConfigFields() {
-		return [
-			{
-				type: 'dropdown',
-				id: 'service',
-				label: 'Service',
-				choices: [
-					{ id: 'cloudflare', label: 'Cloudflare' },
-					{ id: 'speedtest', label: 'Speedtest.net' },
-				],
-				default: 'cloudflare',
-			},
-		]
+		return []
 	}
 
 	updateActions() {
@@ -78,52 +67,24 @@ class SpeedtestInstance extends InstanceBase {
 		this.setPresetDefinitions(presets)
 	}
 
-	runTest() {
-		this.universalSpeedtest = new UniversalSpeedTest({
-			debug: true,
-			measureUpload: true,
-			downloadUnit: SpeedUnits.Mbps,
-			wait: false,
-		})
-
+	async runTest() {
+		this.setVariableValues({ test_status: 'Running' })
 		this.testComplete = false
-		this.setVariableValues({
-			test_status: 'Running',
-			download_speed: '-',
-			upload_speed: '-',
-			ping: '-',
-			jitter: '-',
-			server_city: 'TBD',
-			server_distance: 'TBD',
-			client_public_ip: 'TBD',
-		})
-		this.checkFeedbacks('testComplete')
 
-		if (this.config?.service === 'cloudflare') {
-			this.universalSpeedtest
-				.runCloudflareTest()
-				.then((result) => {
-					this.processTest(result)
-					this.updateStatus(InstanceStatus.Ok)
-				})
-				.catch((error) => {
-					this.log('error', error.message)
-					this.setVariableValues({ test_status: 'Error' })
-					this.updateStatus(InstanceStatus.ConnectionFailure)
-				})
-		} else {
-			this.universalSpeedtest
-				.runSpeedtestTest()
-				.then((result) => {
-					this.processTest(result)
-					this.updateStatus(InstanceStatus.Ok)
-				})
-				.catch((error) => {
-					this.log('error', error.message)
-					this.setVariableValues({ test_status: 'Error' })
-					this.updateStatus(InstanceStatus.ConnectionFailure)
-				})
-		}
+		const universalSpeedTest = new UniversalSpeedTest({
+			debug: true,
+			tests: {
+				measureUpload: true,
+				measureDownload: true,
+			},
+			units: {
+				distanceUnit: DistanceUnits.km,
+			},
+		})
+
+		const testResult = await universalSpeedTest.performOoklaTest()
+		console.log(testResult)
+		this.processTest(testResult)
 	}
 
 	processTest(data) {
@@ -132,13 +93,13 @@ class SpeedtestInstance extends InstanceBase {
 
 		this.setVariableValues({
 			test_status: 'Complete',
-			download_speed: Math.round(data.downloadSpeed),
-			upload_speed: Math.round(data.uploadSpeed),
-			ping: Math.round(data.ping),
-			jitter: Math.round(data.jitter),
-			server_city: data.server?.city,
-			server_distance: Math.round(data.server?.distance),
-			client_public_ip: data.client?.ip,
+			download_speed: Math.round(data.downloadResult?.speed),
+			upload_speed: Math.round(data.uploadResult?.speed),
+			ping: Math.round(data.pingResult?.latency),
+			jitter: Math.round(data.pingResult?.jitter),
+			server_city: data.bestServer?.name ?? 'Unknown',
+			server_distance: Math.round(data.bestServer?.distance),
+			client_public_ip: data.client?.ip ?? 'Unknown',
 		})
 
 		this.checkFeedbacks('resultCheck', 'testComplete')

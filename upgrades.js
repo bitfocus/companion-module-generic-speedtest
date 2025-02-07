@@ -1,13 +1,18 @@
 export const UpgradeScripts = [
-	/*
-	 * Place your upgrade scripts here
-	 * Remember that once it has been added it cannot be removed!
-	 */
-	// function (context, props) {
-	// 	return {
-	// 		updatedConfig: null,
-	// 		updatedActions: [],
-	// 		updatedFeedbacks: [],
-	// 	}
-	// },
+	function (context, props) {
+		//v2.0.0
+		let changed = {
+			updatedConfig: null,
+			updatedActions: [],
+			updatedFeedbacks: [],
+		}
+		if (props.config !== null) {
+			let config = props.config
+			if (config.service) {
+				delete config.service
+				changed.updatedConfig = config
+			}
+		}
+		return changed
+	},
 ]
