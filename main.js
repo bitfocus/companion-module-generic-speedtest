@@ -82,12 +82,18 @@ class SpeedtestInstance extends InstanceBase {
 			},
 		})
 
-		const testResult = await universalSpeedTest.performOoklaTest()
-		console.log(testResult)
-		this.processTest(testResult)
+		try {
+			const testResult = await universalSpeedTest.performOoklaTest()
+			//console.log(testResult)
+			this.processTest(testResult)
+		} catch (e) {
+			this.updateStatus(InstanceStatus.ConnectionFailure)
+			this.log('error', `${e}`)
+		}
 	}
 
 	processTest(data) {
+		this.updateStatus(InstanceStatus.Ok)
 		this.testComplete = true
 		this.testResult = data
 
