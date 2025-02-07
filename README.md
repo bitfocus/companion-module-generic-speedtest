@@ -6,8 +6,9 @@ See [HELP.md](/companion/HELP.md) and [LICENSE](./LICENSE)
 
 ### v2.0.0
 
-- Upgrade universal-speedtest library to a modern version.
-**Note: as of this version, Cloudflare has been removed in the speedtest library, and it now unavailable as a test service. For now, Ookla's speedtest.net is the only available service.**
+- Upgrade backend universal-speedtest library to a modern version.
+
+  **Note: as of this version, Cloudflare has been removed in the speedtest library, and it now unavailable as a test service. For now, Ookla's speedtest.net is the only available service.**
 
 ### v1.0.4
 
