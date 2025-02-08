@@ -12,7 +12,7 @@ import { OAResult } from './@types/speedtest-types.js'
 export class ModuleInstance extends InstanceBase<ModuleConfig> {
 	config!: ModuleConfig
 	testComplete: boolean = false
-	testResult: OAResult | undefined
+	testResult: OAResult | undefined = undefined
 
 	constructor(internal: unknown) {
 		super(internal)
@@ -27,7 +27,7 @@ export class ModuleInstance extends InstanceBase<ModuleConfig> {
 		this.updateFeedbacks()
 		this.updateVariableDefinitions()
 		this.updatePresets()
-		this.testComplete = false
+
 		this.setVariableValues({
 			test_status: 'Not Yet Run',
 			download_speed: '-',
@@ -72,6 +72,7 @@ export class ModuleInstance extends InstanceBase<ModuleConfig> {
 	async runTest(): Promise<OAResult | undefined> {
 		this.setVariableValues({ test_status: 'Running' })
 		this.testComplete = false
+		this.checkFeedbacks('testComplete')
 
 		const universalSpeedTest = new UniversalSpeedTest({
 			debug: true,
@@ -91,7 +92,7 @@ export class ModuleInstance extends InstanceBase<ModuleConfig> {
 			return testResult
 		} catch (e) {
 			this.updateStatus(InstanceStatus.ConnectionFailure)
-			this.log('error', `${e}`)
+			this.log('error', `Test failed: ${e}`)
 			this.setVariableValues({ test_status: 'Error' })
 			return undefined
 		}
