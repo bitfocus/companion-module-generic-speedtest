@@ -1,4 +1,6 @@
-export function getVariables() {
+import type { ModuleInstance } from './main.js'
+
+export function UpdateVariableDefinitions(self: ModuleInstance): void {
 	const variables = [
 		{ variableId: 'download_speed', name: 'Download speed (Mbps)' },
 		{ variableId: 'upload_speed', name: 'Upload speed (Mbps)' },
@@ -9,5 +11,6 @@ export function getVariables() {
 		{ variableId: 'client_public_ip', name: 'Public IP address of the host machine' },
 		{ variableId: 'test_status', name: 'Current status of the speed test' },
 	]
-	return variables
+
+	self.setVariableDefinitions(variables)
 }

@@ -1,9 +1,16 @@
 {
 	"name": "generic-speedtest",
-	"version": "1.0.4",
-	"main": "main.js",
+	"version": "2.0.0",
+	"main": "dist/main.js",
 	"scripts": {
-		"format": "prettier -w ."
+		"postinstall": "husky",
+		"format": "prettier -w .",
+		"package": "yarn build && companion-module-build",
+		"build": "rimraf dist && yarn build:main",
+		"build:main": "tsc -p tsconfig.build.json",
+		"dev": "tsc -p tsconfig.build.json --watch",
+		"lint:raw": "eslint",
+		"lint": "yarn lint:raw ."
 	},
 	"type": "module",
 	"license": "MIT",
@@ -12,12 +19,31 @@
 		"url": "git+https://github.com/bitfocus/companion-module-generic-speedtest.git"
 	},
 	"dependencies": {
-		"@bryce-seifert/universal-speedtest": "^3.0.6",
-		"@companion-module/base": "~1.10.0"
+		"@companion-module/base": "~1.11.3",
+		"universal-speedtest": "^3.0.0"
 	},
 	"devDependencies": {
-		"@companion-module/tools": "^2.0.0",
-		"prettier": "^3.3.3"
+		"@companion-module/tools": "^2.1.1",
+		"@types/node": "^22.13.1",
+		"eslint": "^9.20.0",
+		"husky": "^9.1.7",
+		"lint-staged": "^15.4.3",
+		"prettier": "^3.4.2",
+		"rimraf": "^6.0.1",
+		"typescript": "^5.7.3",
+		"typescript-eslint": "^8.23.0"
 	},
-	"prettier": "@companion-module/tools/.prettierrc.json"
+	"engines": {
+		"node": "^22.13"
+	},
+	"prettier": "@companion-module/tools/.prettierrc.json",
+	"lint-staged": {
+		"*.{css,json,md,scss}": [
+			"prettier --write"
+		],
+		"*.{ts,tsx,js,jsx}": [
+			"yarn lint:raw --fix"
+		]
+	},
+	"packageManager": "yarn@4.6.0"
 }
