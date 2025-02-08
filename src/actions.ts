@@ -5,8 +5,8 @@ export function UpdateActions(self: ModuleInstance): void {
 		runSpeedtest: {
 			name: 'Run Test',
 			options: [],
-			callback: async () => {
-				await self.runTest()
+			callback: () => {
+				 self.runTest()
 			},
 		},
 	})
