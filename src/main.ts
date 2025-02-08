@@ -75,7 +75,7 @@ export class ModuleInstance extends InstanceBase<ModuleConfig> {
 		this.checkFeedbacks('testComplete')
 
 		const universalSpeedTest = new UniversalSpeedTest({
-			debug: true,
+			debug: false,
 			tests: {
 				measureUpload: true,
 				measureDownload: true,
