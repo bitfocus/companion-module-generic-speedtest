@@ -6,7 +6,7 @@ export function UpdateActions(self: ModuleInstance): void {
 			name: 'Run Test',
 			options: [],
 			callback: () => {
-				 self.runTest()
+				void self.runTest()
 			},
 		},
 	})
