@@ -1,5 +1,6 @@
 import { combineRgb, CompanionFeedbackDefinitions } from '@companion-module/base'
 import type { ModuleInstance } from './main.js'
+import { OAResult } from './@types/speedtest-types.js'
 
 export function UpdateFeedbacks(self: ModuleInstance): void {
 	const ColorGreen = combineRgb(0, 200, 0)
@@ -49,10 +50,15 @@ export function UpdateFeedbacks(self: ModuleInstance): void {
 				},
 			],
 			callback: (feedback) => {
-				if (feedback.options.comparison === 'greater') {
-					return self.testResult?.[`${feedback.options.measure}`] > (feedback.options.value ?? 0)
+				const measure = feedback.options.measure as keyof OAResult
+				if (self.testResult?.[measure]) {
+					if (feedback.options.comparison === 'greater') {
+						return self.testResult[measure] > (feedback.options.value ?? 0)
+					} else {
+						return self.testResult[measure] < (feedback.options.value ?? 0)
+					}
 				} else {
-					return self.testResult?.[`${feedback.options.measure}`] < (feedback.options.value ?? 0)
+					return false
 				}
 			},
 		},

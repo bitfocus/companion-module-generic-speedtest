@@ -7,7 +7,7 @@ import { UpdatePresets } from './presets.js'
 import { UpgradeScripts } from './upgrades.js'
 
 import { UniversalSpeedTest, DistanceUnits } from 'universal-speedtest'
-import { OAResult } from 'universal-speedtest/dist/esm/interfaces/ookla.js'
+import { OAResult } from './@types/speedtest-types.js'
 
 export class ModuleInstance extends InstanceBase<ModuleConfig> {
 	config!: ModuleConfig
