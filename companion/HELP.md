@@ -2,7 +2,7 @@
 
 This module will allow you to conduct an internet speed test using Ookla's speedtest.net.
 
-*Note: As of v2.0.0, Cloudflare is no longer provided as an option due to support being dropped by the underlying speedtest library and Cloudflare's library not being compatible with Node.js.*
+_Note: As of v2.0.0, Cloudflare is no longer provided as an option due to support being dropped by the underlying speedtest library and Cloudflare's library not being compatible with Node.js._
 
 ### Configuration
 
